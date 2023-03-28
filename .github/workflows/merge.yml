@@ -19,4 +19,4 @@ jobs:
           type: now
           from_branch: test
           target_branch: main
-          github_token: ${{ MY_TOKEN }}
+          github_token: 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
