@@ -13,8 +13,10 @@ jobs:
           ref: main
       - name: Merge test -> main
         uses: devmasx/merge-branch@master
+        env:
+          MY_TOKEN: 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
         with:
           type: now
           from_branch: test
           target_branch: main
-          github_token: "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"
+          github_token: ${{ MY_TOKEN }}
