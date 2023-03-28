@@ -1,0 +1,22 @@
+name: Merge develop into main
+
+on:
+  push:
+    branches:
+      - test
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v3
+        with:
+          ref: main
+      - name: Merge develop branch
+        run: git merge test
+      - name: Push changes
+        uses: ad-m/github-push-action@main
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
