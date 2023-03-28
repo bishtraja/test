@@ -1,4 +1,4 @@
-name: Merge develop into main
+name: Merge test into main
 
 on:
  workflow_dispatch:
