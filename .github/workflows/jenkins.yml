@@ -4,6 +4,22 @@ on:
  workflow_dispatch:
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if curl is installed
+        run: |
+          if ! command -v curl &> /dev/null
+          then
+              echo "curl is not installed"
+              exit 1
+          else
+              echo "curl is installed"
+          fi
+      - name: Install curl
+        run: sudo apt-get update && sudo apt-get install -y curl
+
+
   trigger-a-jenkins-job:
     runs-on: ubuntu-latest
     steps:
@@ -17,3 +33,4 @@ jobs:
           poll-time: 10 
           timeout-value: 600 
           verbose: true
+
