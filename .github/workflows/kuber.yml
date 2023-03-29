@@ -9,6 +9,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Check kubectl version
+        run: kubectl version --client
+
       - uses: actions/checkout@v1
       - uses: actions-hub/kubectl@master
         env:
