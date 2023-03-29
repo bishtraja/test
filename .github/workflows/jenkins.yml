@@ -1,0 +1,19 @@
+name: Trigger jenkins job
+
+on:
+ workflow_dispatch:
+
+jobs:
+  trigger-a-jenkins-job:
+    runs-on: ubuntu-latest
+    steps:
+      - id: triggerjenkinsjob
+        uses: mickeygoussetorg/trigger-jenkins-job@v1
+        with:
+          jenkins-server:  "${{ secrets.JENKINS_SERVER }}" 
+          jenkins-job: "test" 
+          jenkins-username: ${{ secrets.JENKINS_USERNAME }} 
+          jenkins-pat: ${{ secrets.JENKINS_PAT }} 
+          poll-time: 10 
+          timeout-value: 600 
+          verbose: true
