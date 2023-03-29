@@ -11,8 +11,7 @@ jobs:
           mkdir ${HOME}/.kube
           echo ${{ secrets.KUBE_CONFIG }} | base64 --decode > ${HOME}/.kube/config
           cat ${HOME}/.kube/config
-      - name: Deploy
-        uses: WyriHaximus/github-action-helm3@v3
+      - uses: tale/kubectl-action@v1
         with:
-          exec: helm list
-          kubeconfig: '${{ secrets.KUBECONFIG }}'
+          base64-kube-config: ${{ secrets.KUBE_CONFIG }}
+      - run: kubectl get pods
