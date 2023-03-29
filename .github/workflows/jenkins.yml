@@ -16,15 +16,12 @@ jobs:
           else
               echo "curl is installed"
           fi
-      - name: Install curl
-        run: sudo apt-get update && sudo apt-get install -y curl
-
 
   trigger-a-jenkins-job:
     runs-on: ubuntu-latest
     steps:
       - id: triggerjenkinsjob
-        uses: mickeygoussetorg/trigger-jenkins-job@v1
+        uses: appleboy/jenkins-action@master
         with:
           jenkins-server:  "${{ secrets.JENKINS_SERVER }}" 
           jenkins-job: "test" 
