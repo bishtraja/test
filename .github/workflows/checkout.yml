@@ -1,0 +1,19 @@
+name: checkouttest into main
+
+on:
+ workflow_dispatch:
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v3
+        with:
+          ref: main
+     - name: checkout into different repo
+       uses: actions/checkout@v3
+       with: 
+       repository: https://github.com/bishtraja/new.git
+       ref: new
+       
