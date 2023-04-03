@@ -1,0 +1,71 @@
+name: QA_Bigparser_UI
+
+on:
+  push:
+    branches: [ "test_qa_github_action" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: us-east-1
+      CLUSTER_NAME: Bigparser-QA
+
+    strategy:
+      matrix:
+        node-version: [10.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+        
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        
+    - name: Check version    
+      run: |
+        npm list -global --depth 0
+        node --version
+        npm --version
+        gulp --version
+       
+    - name: Build
+      run: |
+        npm install
+        npm install -g bower
+        bower install
+        npm install -g @angular/cli@8.0.6
+        npm install -g gulp-cli@2.2.0
+        gulp build:dist --configuration=qa
+
+        
+    - name: Health Page
+      run: |   
+        MY_DATE=$(date +%Y-%m-%d-%H-%M)
+        old_value=`cat dist/Angular8App/test_devops_page.html | grep -n "ArtiFact" | cut -d '>' -f 2 | cut -d '<' -f 1`
+        echo $old_value
+        new_value='ArtiFact_Date:'$MY_DATE''
+        echo $new_value
+        sed -i "s#${old_value}#$new_value#" dist/Angular8App/test_devops_page.html
+        
+    - name: Deploy to s3
+      run: |
+        aws s3 sync ./dist/ s3://test-static-bucket-bigparser	
+        
+    - name: kubeconfing
+      shell: bash
+      run: |
+          aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
+          helm ls
+          
+    - name: Check github number
+      run: echo ${{ github.run_number }}
+        
