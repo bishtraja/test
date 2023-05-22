@@ -9,7 +9,7 @@ error() {
 [ $# = 1 ] || error "Usage: $(basename "${0}") JSONNET_FILE_OF_DASHBOARD"
 dashboard_jsonnet_file="${1}"
 
-rendered_json_file="/test/$(basename "${dashboard_jsonnet_file%.jsonnet}").rendered.json"
+rendered_json_file="/home/opstree/test/$(basename "${dashboard_jsonnet_file%.jsonnet}").rendered.json"
 
 # Render
 JSONNET_PATH="$(realpath vendor)"
