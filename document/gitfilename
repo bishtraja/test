@@ -1,0 +1,7 @@
+def latestCommit = sh(script: 'git log -1 --pretty=format:%H -- path/to/folder', returnStdout: true).trim()
+            def fileName = sh(script: 'git diff-tree --no-commit-id --name-only -r ' + latestCommit + ' path/to/folder | head -n 1', returnStdout: true).trim()
+            echo "Latest file name: ${fileName}"
+
+
+
+it will fetch the filename of the latest commit
